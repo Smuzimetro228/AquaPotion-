@@ -10,10 +10,14 @@ jobs:
       - uses: actions/setup-java@v5
         with:
           distribution: temurin
-          java-version: 21
+          java-version: '21'
           cache: maven
-      - run: mvn -B package
+      - name: Build
+        run: |
+          POM=$(find . -name pom.xml | head -n 1)
+          echo "Using $POM"
+          mvn -B package -f "$POM"
       - uses: actions/upload-artifact@v7
         with:
           name: AquaPotion
-          path: target/*.jar
+          path: "**/target/*.jar"
